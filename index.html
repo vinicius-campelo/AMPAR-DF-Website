@@ -3,14 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMPAR-DF — Associação dos Moradores da Ponte Alta Norte e Regiões</title>
-<meta name="description" content="AMPAR-DF: Associação dos Moradores da Ponte Alta Norte e Regiões. Representando Ponte Alta Norte, Núcleo Rural Casa Grande e Olhos D'Água, no Gama-DF.">
-<link rel="icon" href="images/media1.png" type="image/png">
+<title>AMPAR-DF | Voz e comunidade em Ponte Alta Norte</title>
+<meta name="description" content="A AMPAR-DF representa moradores de Ponte Alta Norte, Núcleo Rural Casa Grande e Olhos D'Água. Conheça a associação e participe.">
+<meta name="theme-color" content="#31163c">
+<link rel="icon" href="images/ampardf-mark.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Hahmlet:wght@100..900&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
 </head>
 <body>
 
@@ -18,11 +21,11 @@
 <header class="site-header" id="topo">
   <div class="wrap header-inner">
     <a class="brand" href="#topo">
-      <img src="images/media1.png" alt="Símbolo AMPAR-DF" class="brand-mark" width="180" height="146">
-      <span class="brand-text">AMPAR<span class="brand-df">-DF</span></span>
+      <span class="brand-mark-wrap"><img src="images/media2.png" alt="Símbolo da AMPAR-DF" class="brand-mark" width="58" height="42"></span>
+      <span class="brand-logo">AMPAR<span class="brand-df">-DF</span></span>
     </a>
 
-    <nav class="main-nav" id="mainNav">
+    <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
       <a href="#sobre">Sobre</a>
       <a href="#historia">Trajetória</a>
       <a href="#atuacao">Atuação</a>
@@ -35,7 +38,7 @@
 
     <a class="btn btn-ghost-nav" href="https://wa.me/5561985150079" target="_blank" rel="noopener">Fale no WhatsApp</a>
 
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-controls="mainNav" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -69,10 +72,34 @@
     </div>
 
   <figure class="hero-photo photo-slot">
-  <div class="photo-slot-inner">
-    <img src="images/media2.png" alt="Foto de Ponte Alta Norte" class="photo-slot-img" style="width:100%; height:100%; object-fit:cover; border-radius: 20px;">
-  </div>
-</figure>
+    <div class="hero-carousel" id="heroCarousel" role="region" aria-roledescription="carrossel" aria-label="Paisagens e comunidade de Ponte Alta Norte" aria-live="off">
+      <div class="hero-carousel-slides">
+        <div class="hero-slide is-active" role="group" aria-roledescription="slide" aria-label="1 de 3" aria-hidden="false">
+          <img src="images/ponte-alta.png" alt="Imagem ilustrativa de paisagem rural do cerrado, inspirada na região de Ponte Alta Norte" class="photo-slot-img" width="900" height="1100" fetchpriority="high">
+          <figcaption>Ponte Alta Norte <span>Território e comunidade</span></figcaption>
+        </div>
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="2 de 3" aria-hidden="true">
+          <img src="images/estrada-rural.png" alt="Imagem ilustrativa de uma estrada rural entre a vegetação do cerrado" class="photo-slot-img" width="900" height="1100" loading="lazy">
+          <figcaption>Caminhos da região <span>Um lugar de histórias e encontros</span></figcaption>
+        </div>
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="3 de 3" aria-hidden="true">
+          <img src="images/comunidade.png" alt="Imagem ilustrativa de moradores reunidos em uma conversa comunitária" class="photo-slot-img" width="900" height="1100" loading="lazy">
+          <figcaption>Vozes que se unem <span>Participação que fortalece a comunidade</span></figcaption>
+        </div>
+      </div>
+      <div class="hero-carousel-controls" aria-label="Controles do carrossel">
+        <button class="carousel-arrow" type="button" data-carousel-prev aria-label="Imagem anterior"><span aria-hidden="true">‹</span></button>
+        <div class="carousel-dots" role="group" aria-label="Escolher imagem">
+          <button class="carousel-dot is-active" type="button" data-carousel-slide="0" aria-label="Mostrar imagem 1" aria-pressed="true"></button>
+          <button class="carousel-dot" type="button" data-carousel-slide="1" aria-label="Mostrar imagem 2" aria-pressed="false"></button>
+          <button class="carousel-dot" type="button" data-carousel-slide="2" aria-label="Mostrar imagem 3" aria-pressed="false"></button>
+        </div>
+        <button class="carousel-play" type="button" data-carousel-toggle aria-label="Pausar apresentação" aria-pressed="false"><span class="carousel-play-icon" aria-hidden="true"></span></button>
+        <button class="carousel-arrow" type="button" data-carousel-next aria-label="Próxima imagem"><span aria-hidden="true">›</span></button>
+      </div>
+    </div>
+    <figcaption class="sr-only">Carrossel de imagens ilustrativas da região e da comunidade.</figcaption>
+  </figure>
   </div>
 </section>
 
@@ -83,7 +110,7 @@
       <span class="tag">Quem somos</span>
       <h2>Uma associação de moradores, feita por moradores.</h2>
     </div>
-    <div class="section-body">
+    <div class="section-body justify-text">
       <p>
         A <strong>Associação dos Moradores da Ponte Alta Norte e Regiões (AMPAR-DF)</strong> é uma organização
         comunitária sem fins lucrativos sediada no Gama, Distrito Federal. Ela representa famílias e produtores rurais
@@ -155,7 +182,7 @@
         <div class="timeline-content">
           <span class="timeline-tag">Atuação contínua</span>
           <h3>Monitoramento diário das demandas</h3>
-          <p>A diretoria acompanha e cobra soluções para problemas de infraestrutura — de falhas no fornecimento
+          <p>A diretoria acompanha e cobra soluções para problemas de infraestrutura de falhas no fornecimento
              de energia a questões de segurança e mobilidade — em parceria com veículos de comunicação locais
              como o Ponte Alta News.</p>
         </div>
@@ -218,41 +245,41 @@
     <div class="section-head center">
       <span class="tag">Registros</span>
       <h2>A cara da nossa região</h2>
-      <p class="section-sub">Espaços reservados para fotos reais da comunidade — troque cada quadro pela imagem correspondente assim que a diretoria aprovar o uso.</p>
+      <p class="section-sub">Imagens ilustrativas criadas para esta prévia. Antes de publicar, substitua por registros reais da região e da associação, com autorização de uso.</p>
     </div>
 
     <div class="gallery-grid">
       <figure class="photo-slot gallery-item gallery-tall" data-suggestao="images/sede-ampar.jpg">
         <div class="photo-slot-inner">
-          <svg viewBox="0 0 48 48" fill="none" class="photo-slot-icon"><rect x="5" y="12" width="38" height="28" rx="4" stroke="currentColor" stroke-width="2.4"/><circle cx="24" cy="26" r="8" stroke="currentColor" stroke-width="2.4"/><path d="M17 12l2.5-4h9l2.5 4" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
-          <figcaption>Sede da AMPAR-DF<span>Chácara 09, Ponte Alta Norte</span></figcaption>
+          <img src="images/comunidade.png" alt="Moradores reunidos em encontro comunitário" loading="lazy" width="900" height="650">
+          <figcaption>Convivência comunitária<span>Participação e encontro de moradores</span></figcaption>
         </div>
       </figure>
 
       <figure class="photo-slot gallery-item" data-suggestao="images/estrada-ponte-alta.jpg">
         <div class="photo-slot-inner">
-          <svg viewBox="0 0 48 48" fill="none" class="photo-slot-icon"><rect x="5" y="12" width="38" height="28" rx="4" stroke="currentColor" stroke-width="2.4"/><circle cx="24" cy="26" r="8" stroke="currentColor" stroke-width="2.4"/><path d="M17 12l2.5-4h9l2.5 4" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <img src="images/estrada-rural.png" alt="Estrada de terra em área rural do cerrado" loading="lazy" width="900" height="650">
           <figcaption>Estrada de acesso<span>Ponte Alta Norte</span></figcaption>
         </div>
       </figure>
 
       <figure class="photo-slot gallery-item" data-suggestao="images/casa-grande.jpg">
         <div class="photo-slot-inner">
-          <svg viewBox="0 0 48 48" fill="none" class="photo-slot-icon"><rect x="5" y="12" width="38" height="28" rx="4" stroke="currentColor" stroke-width="2.4"/><circle cx="24" cy="26" r="8" stroke="currentColor" stroke-width="2.4"/><path d="M17 12l2.5-4h9l2.5 4" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <img src="images/ponte-alta.png" alt="Paisagem rural da região atendida pela associação" loading="lazy" width="900" height="650">
           <figcaption>Núcleo Rural Casa Grande</figcaption>
         </div>
       </figure>
 
       <figure class="photo-slot gallery-item" data-suggestao="images/olhos-dagua.jpg">
         <div class="photo-slot-inner">
-          <svg viewBox="0 0 48 48" fill="none" class="photo-slot-icon"><rect x="5" y="12" width="38" height="28" rx="4" stroke="currentColor" stroke-width="2.4"/><circle cx="24" cy="26" r="8" stroke="currentColor" stroke-width="2.4"/><path d="M17 12l2.5-4h9l2.5 4" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <img src="images/ponte-alta.png" alt="Paisagem do cerrado em Olhos D'Água" loading="lazy" width="900" height="650">
           <figcaption>Olhos D'Água</figcaption>
         </div>
       </figure>
 
       <figure class="photo-slot gallery-item gallery-wide" data-suggestao="images/reuniao-comunitaria.jpg">
         <div class="photo-slot-inner">
-          <svg viewBox="0 0 48 48" fill="none" class="photo-slot-icon"><rect x="5" y="12" width="38" height="28" rx="4" stroke="currentColor" stroke-width="2.4"/><circle cx="24" cy="26" r="8" stroke="currentColor" stroke-width="2.4"/><path d="M17 12l2.5-4h9l2.5 4" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <img src="images/comunidade.png" alt="Moradores participando de conversa comunitária" loading="lazy" width="900" height="650">
           <figcaption>Reunião comunitária<span>encontro de moradores e diretoria</span></figcaption>
         </div>
       </figure>
@@ -414,14 +441,28 @@
         <form id="whatsappForm">
             <div class="input-container" style="position: relative; margin-bottom: 20px;">
                 <i class="fas fa-user" style="position: absolute; top: 15px; left: 15px; color: var(--roxo-suave);"></i>
-                <input type="text" id="nome" name="nome" placeholder="Seu Nome Completo" required style="width: 100%; padding: 14px 14px 14px 45px; border: 1px solid var(--linha); border-radius: 12px; font-family: inherit; font-size: .95rem; background: rgba(255,255,255,0.8);">
+                <label class="sr-only" for="nome">Seu nome completo</label>
+                <input type="text" id="nome" name="nome" placeholder="Seu nome completo" autocomplete="name" required style="width: 100%; padding: 14px 14px 14px 45px; border: 1px solid var(--linha); border-radius: 12px; font-family: inherit; font-size: .95rem; background: rgba(255,255,255,0.8);">
             </div>
             <div class="input-container" style="position: relative; margin-bottom: 20px;">
-                <i class="fas fa-tag" style="position: absolute; top: 15px; left: 15px; color: var(--roxo-suave);"></i>
-                <input type="text" id="assunto" name="assunto" placeholder="Assunto (Ex: Associação, Demanda)" required style="width: 100%; padding: 14px 14px 14px 45px; border: 1px solid var(--linha); border-radius: 12px; font-family: inherit; font-size: .95rem; background: rgba(255,255,255,0.8);">
+                <i class="fas fa-location-dot" aria-hidden="true"></i>
+                <label class="sr-only" for="regiao">Sua região</label>
+                <select id="regiao" name="regiao" required>
+                  <option value="" disabled selected>Selecione sua região</option>
+                  <option>Ponte Alta Norte</option>
+                  <option>Núcleo Rural Casa Grande</option>
+                  <option>Olhos D'Água</option>
+                  <option>Outra região</option>
+                </select>
+            </div>
+            <div class="input-container" style="position: relative; margin-bottom: 20px;">
+                <i class="fas fa-tag" aria-hidden="true"></i>
+                <label class="sr-only" for="assunto">Assunto</label>
+                <input type="text" id="assunto" name="assunto" placeholder="Assunto (ex.: associação, demanda)" required>
             </div>
             <div class="input-container" style="position: relative; margin-bottom: 20px;">
                 <i class="fas fa-comment" style="position: absolute; top: 15px; left: 15px; color: var(--roxo-suave);"></i>
+                <label class="sr-only" for="mensagem">Sua mensagem</label>
                 <textarea id="mensagem" name="mensagem" rows="5" placeholder="Escreva sua mensagem..." required style="width: 100%; padding: 14px 14px 14px 45px; border: 1px solid var(--linha); border-radius: 12px; font-family: inherit; font-size: .95rem; background: rgba(255,255,255,0.8);"></textarea>
             </div>
             <button type="submit" class="btn-whatsapp-full" style="width: 100%; background: var(--verde); color: var(--branco); padding: 16px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;">
@@ -434,27 +475,44 @@
 </section>
 
 <!-- ===== FOOTER ===== -->
-<footer class="site-footer">
-  <div class="wrap footer-inner">
+<footer class="site-footer" id="rodape">
+  <div class="wrap footer-main">
     <div class="footer-brand">
-      <img src="images/media1.png" alt="Símbolo AMPAR-DF" class="footer-mark" width="120" height="97">
-      <p>AMPAR-DF — Associação dos Moradores da<br>Ponte Alta Norte e Regiões</p>
+      <img src="images/media1.png" alt="AMPAR-DF — Associação dos Moradores da Ponte Alta Norte e Regiões" class="footer-mark" width="260" height="205" loading="lazy">
+      <p class="footer-mission">Unindo moradores e fortalecendo a comunidade de Ponte Alta Norte e regiões.</p>
     </div>
 
-    <nav class="footer-nav">
-      <a href="#sobre">Sobre</a>
-      <a href="#historia">Trajetória</a>
-      <a href="#atuacao">Atuação</a>
-      <a href="#contato">Contato</a>
-    </nav>
+    <div class="footer-column">
+      <h2 class="footer-heading">Navegação</h2>
+      <nav class="footer-nav" aria-label="Links do rodapé">
+        <a href="#sobre">Sobre a associação</a>
+        <a href="#historia">Nossa trajetória</a>
+        <a href="#atuacao">Áreas de atuação</a>
+        <a href="#galeria">Galeria</a>
+        <a href="#contato">Fale conosco</a>
+      </nav>
+    </div>
+
+    <div class="footer-column footer-contact">
+      <h2 class="footer-heading">Entre em contato</h2>
+      <a class="footer-contact-link" href="tel:+5561985150079">Telefone / WhatsApp <span>(61) 98515-0079</span></a>
+      <a class="footer-contact-link" href="mailto:df.ampar@gmail.com">E-mail <span>df.ampar@gmail.com</span></a>
+      <div class="footer-address">
+        <span>Endereço da associação</span>
+        <address>Chácara 09, Lote 04<br>Ponte Alta Norte, Gama-DF<br>CEP 72427-010</address>
+        <a class="footer-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Ch%C3%A1cara+09%2C+Lote+04%2C+Ponte+Alta+Norte%2C+Gama-DF%2C+CEP+72427-010" target="_blank" rel="noopener noreferrer">Ver endereço no mapa <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
   </div>
   <div class="wrap footer-legal">
-    <p>
-      Site informativo não oficial, elaborado a partir de informações públicas disponíveis na internet
-      (redes sociais, documentos públicos e site oficial da associação). Para informações atualizadas e oficiais,
-      consulte sempre os canais diretos da AMPAR-DF.
+    <p class="footer-disclaimer">
+      Site informativo não oficial, elaborado a partir de informações públicas disponíveis na internet.
+      Para informações atualizadas e oficiais, consulte diretamente os canais da AMPAR-DF.
     </p>
-    <p>© <span id="year"></span> AMPAR-DF · Ponte Alta Norte, Gama-DF</p>
+    <div class="footer-legal-bottom">
+      <p>© <span id="year"></span> AMPAR-DF. Todos os direitos reservados.</p>
+      <a href="#topo" id="footerBackToTop">Voltar ao topo <span aria-hidden="true">↑</span></a>
+    </div>
   </div>
 </footer>
 
