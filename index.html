@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-
 </head>
 <body>
 
@@ -401,12 +400,38 @@
 
       <a class="social-card" href="https://ampardf.com.br/" target="_blank" rel="noopener">
         <span class="social-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z" stroke="currentColor" stroke-width="1.6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 3 12 3z" stroke="currentColor" stroke-width="1.6"/></svg>
         </span>
         <span class="social-name">Site oficial</span>
         <span class="social-handle">ampardf.com.br</span>
       </a>
+
+      <button class="social-card social-card-map" type="button" data-map-toggle aria-controls="mapa-da-regiao" aria-expanded="false">
+        <span class="social-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="m3 6 5-2 8 2 5-2v14l-5 2-8-2-5 2V6Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 4v14m8-12v14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 7.5a2.5 2.5 0 0 0-2.5 2.5c0 1.8 2.5 4.6 2.5 4.6s2.5-2.8 2.5-4.6A2.5 2.5 0 0 0 12 7.5Z" fill="var(--laranja)" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="10" r=".8" fill="currentColor"/></svg>
+        </span>
+        <span class="social-name">Mapa da região</span>
+        <span class="social-handle">Explore Ponte Alta Norte e regiões</span>
+        <span class="map-card-action" aria-hidden="true">Abrir mapa <span>↓</span></span>
+      </button>
     </div>
+
+    <section class="map-embed" id="mapa-da-regiao" aria-labelledby="map-embed-title" hidden>
+      <div class="map-embed-header">
+        <div class="map-embed-copy">
+          <span class="map-embed-kicker">AMPAR-DF · Mapa interativo</span>
+          <h3 id="map-embed-title">Explore o mapa da região</h3>
+          <p>Consulte os pontos e as áreas representadas pela associação diretamente nesta página.</p>
+        </div>
+        <div class="map-embed-actions">
+          <a href="https://mapa.ampardf.com.br/" target="_blank" rel="noopener noreferrer" class="map-embed-external">Abrir em nova aba <span aria-hidden="true">↗</span></a>
+          <button class="map-embed-close" type="button" data-map-close aria-label="Fechar mapa">Fechar mapa <span aria-hidden="true">×</span></button>
+        </div>
+      </div>
+      <div class="map-frame-wrap">
+        <iframe title="Mapa interativo da AMPAR-DF — Ponte Alta Norte e regiões" data-src="https://mapa.ampardf.com.br/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </section>
   </div>
 </section>
 

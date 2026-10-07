@@ -189,6 +189,36 @@ document.addEventListener('DOMContentLoaded', function () {
     startTimer();
   }
 
+  // Mapa interativo incorporado na seção de redes sociais.
+  const mapToggle = document.querySelector('[data-map-toggle]');
+  const mapPanel = document.getElementById('mapa-da-regiao');
+  const mapFrame = mapPanel?.querySelector('iframe[data-src]');
+  const mapClose = mapPanel?.querySelector('[data-map-close]');
+
+  if (mapToggle && mapPanel && mapFrame) {
+    const setMapOpen = (isOpen) => {
+      mapPanel.hidden = !isOpen;
+      mapToggle.setAttribute('aria-expanded', String(isOpen));
+
+      if (isOpen) {
+        if (!mapFrame.hasAttribute('src')) mapFrame.src = mapFrame.dataset.src;
+        window.requestAnimationFrame(() => {
+          mapPanel.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'start'
+          });
+        });
+      } else {
+        mapToggle.focus();
+      }
+    };
+
+    mapToggle.addEventListener('click', () => {
+      setMapOpen(mapPanel.hidden);
+    });
+    mapClose?.addEventListener('click', () => setMapOpen(false));
+  }
+
   // 6. Manipulador do Formulário do WhatsApp
   const whatsappForm = document.getElementById('whatsappForm');
   if (whatsappForm) {
