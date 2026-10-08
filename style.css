@@ -857,7 +857,7 @@ p { line-height: 1.78; }
 @keyframes map-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .map-embed-external:focus-visible { outline: 3px solid var(--laranja); outline-offset: 4px; }
 @media (max-width: 700px) {
-  .map-embed { grid-template-rows: auto minmax(400px, 62vh); border-radius: 18px; }
+  /*.map-embed { grid-template-rows: auto minmax(400px, 62vh); border-radius: 18px; }*/
   .map-embed-header { align-items: flex-start; flex-direction: column; gap: 16px; padding: 20px; }
   .map-embed-actions { width: 100%; }
   .map-embed-external { flex: 1; }
