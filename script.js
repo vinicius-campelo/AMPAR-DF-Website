@@ -215,7 +215,8 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const safeImageUrl = (value) => {
-      const url = safeUrl(value);
+      const decodedValue = typeof value === 'string' ? value.replace(/&amp;/gi, '&') : value;
+      const url = safeUrl(decodedValue);
       return url && (url.hostname.endsWith('.fbcdn.net') || url.hostname.endsWith('.fbsbx.com')) ? url.href : null;
     };
 
@@ -264,11 +265,13 @@ document.addEventListener('DOMContentLoaded', function () {
         image.addEventListener('error', () => image.remove(), { once: true });
         link.append(image);
       } else {
-        const marker = document.createElement('span');
-        marker.className = 'instagram-post-marker';
-        marker.setAttribute('aria-hidden', 'true');
-        marker.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 4.75h14A2.25 2.25 0 0 1 21.25 7v10A2.25 2.25 0 0 1 19 19.25H5A2.25 2.25 0 0 1 2.75 17V7A2.25 2.25 0 0 1 5 4.75Z" stroke="currentColor" stroke-width="1.6"/><path d="m3 15 5-5 4 4 2.5-2.5L21 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-        link.append(marker);
+        const image = document.createElement('img');
+        image.className = 'instagram-post-thumbnail instagram-post-thumbnail-fallback';
+        image.src = 'images/media1.png';
+        image.alt = 'Logo da AMPAR-DF';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        link.append(image);
       }
 
       const content = document.createElement('div');
