@@ -443,7 +443,7 @@
       </div>
     </section>
 
-    <section class="instagram-feed" data-instagram-feed data-feed-url="/api/ampardf-news" aria-labelledby="instagram-feed-title">
+    <section class="instagram-feed" data-instagram-feed data-feed-url="https://ampar-tau.vercel.app/api/ampardf-news" aria-labelledby="instagram-feed-title">
       <div class="instagram-feed-heading">
         <div class="instagram-feed-copy">
           <span class="instagram-feed-kicker">AMPAR-DF · Notícias da comunidade</span>
@@ -462,32 +462,44 @@
 
 <!-- ===== CONTATO ===== -->
 <section class="section section-contact" id="contato">
-  <div class="wrap section-grid">
-    <div class="section-head">
-      <span class="tag tag">Fale com a associação</span>
+  <div class="wrap">
+    <header class="contact-heading">
+      <span class="tag">Fale com a associação</span>
       <h2>Quer se associar ou relatar uma demanda?</h2>
-      <p>Entre em contato pelos canais oficiais abaixo. A diretoria da AMPAR-DF responde pelas redes sociais e WhatsApp.</p>
+      <p>A AMPAR-DF está à disposição para ouvir você e fortalecer nossa comunidade.</p>
+    </header>
 
-      <dl class="contact-list" style="margin-top: 30px;">
-        <div>
-          <dt>Telefone / WhatsApp</dt>
-          <dd><a href="tel:+5561985150079">(61) 98515-0079</a></dd>
+    <div class="contact-layout">
+      <div class="contact-details">
+        <div class="contact-channels" aria-label="Canais de contato">
+          <a class="contact-channel" href="tel:+5561985150079">
+            <span class="contact-channel-icon" aria-hidden="true"><i class="fas fa-phone"></i></span>
+            <span class="contact-channel-copy"><span>Telefone / WhatsApp</span><strong>(61) 98515-0079</strong></span>
+            <span class="contact-channel-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="contact-channel" href="mailto:df.ampar@gmail.com">
+            <span class="contact-channel-icon" aria-hidden="true"><i class="fas fa-envelope"></i></span>
+            <span class="contact-channel-copy"><span>E-mail</span><strong>df.ampar@gmail.com</strong></span>
+            <span class="contact-channel-arrow" aria-hidden="true">↗</span>
+          </a>
         </div>
-        <div>
-          <dt>E-mail</dt>
-          <dd><a href="mailto:df.ampar@gmail.com">df.ampar@gmail.com</a></dd>
-        </div>
-        <div>
-          <dt>Endereço</dt>
-          <dd>Chácara 09, Lote 04 — Ponte Alta Norte, Gama-DF<br>CEP 72427-010</dd>
-        </div>
-      </dl>
-    </div>
 
-    <div class="section-body">
-      <!-- Formulário de Contato -->
+        <div class="contact-map-card">
+          <div class="contact-map-heading">
+            <div>
+              <span class="contact-map-kicker">Onde estamos</span>
+              <h3>Ponte Alta Norte, Gama-DF</h3>
+              <p>Chácara 09, Lote 04 · CEP 72427-010</p>
+            </div>
+            <a class="contact-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Ch%C3%A1cara+09%2C+Lote+04%2C+Ponte+Alta+Norte%2C+Gama-DF%2C+CEP+72427-010" target="_blank" rel="noopener noreferrer" aria-label="Abrir endereço da AMPAR-DF no Google Maps">Abrir mapa <span aria-hidden="true">↗</span></a>
+          </div>
+          <iframe class="contact-map-frame" title="Mapa da localização da AMPAR-DF em Ponte Alta Norte, Gama-DF" src="https://www.google.com/maps?q=Ch%C3%A1cara+09%2C+Lote+04%2C+Ponte+Alta+Norte%2C+Gama-DF%2C+CEP+72427-010&amp;output=embed" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+
       <div class="contact-form-container">
-        <h3 style="margin-bottom: 24px; font-family: var(--fonte-display); font-size: 1.5rem; color: var(--roxo-escuro);">Envie uma mensagem direta</h3>
+        <h3 class="contact-form-title">Envie uma mensagem direta</h3>
+        <p class="contact-form-intro">Preencha os dados e continue a conversa pelo WhatsApp.</p>
         <form id="whatsappForm">
             <div class="input-container" style="position: relative; margin-bottom: 20px;">
                 <i class="fas fa-user" style="position: absolute; top: 15px; left: 15px; color: var(--roxo-suave);"></i>
@@ -526,45 +538,6 @@
 
 <!-- ===== FOOTER ===== -->
 <footer class="site-footer" id="rodape">
-  <div class="wrap footer-main">
-    <div class="footer-brand">
-      <img src="images/media1.png" alt="AMPAR-DF — Associação dos Moradores da Ponte Alta Norte e Regiões" class="footer-mark" width="260" height="205" loading="lazy">
-      <p class="footer-mission">Unindo moradores e fortalecendo a comunidade de Ponte Alta Norte e regiões.</p>
-    </div>
-
-    <div class="footer-column">
-      <h2 class="footer-heading">Navegação</h2>
-      <nav class="footer-nav" aria-label="Links do rodapé">
-        <a href="#sobre">Sobre a associação</a>
-        <a href="#historia">Nossa trajetória</a>
-        <a href="#atuacao">Áreas de atuação</a>
-        <a href="#galeria">Galeria</a>
-        <a href="#contato">Fale conosco</a>
-      </nav>
-    </div>
-
-    <div class="footer-column footer-contact">
-      <h2 class="footer-heading">Entre em contato</h2>
-      <a class="footer-contact-link" href="tel:+5561985150079">Telefone / WhatsApp <span>(61) 98515-0079</span></a>
-      <a class="footer-contact-link" href="mailto:df.ampar@gmail.com">E-mail <span>df.ampar@gmail.com</span></a>
-      <div class="footer-address">
-        <span>Endereço da associação</span>
-        <address>Chácara 09, Lote 04<br>Ponte Alta Norte, Gama-DF<br>CEP 72427-010</address>
-        <a class="footer-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Ch%C3%A1cara+09%2C+Lote+04%2C+Ponte+Alta+Norte%2C+Gama-DF%2C+CEP+72427-010" target="_blank" rel="noopener noreferrer">Ver endereço no mapa <span aria-hidden="true">↗</span></a>
-      </div>
-    </div>
-  </div>
-  <div class="wrap footer-legal">
-    <p class="footer-disclaimer">
-      Site informativo não oficial, elaborado a partir de informações públicas disponíveis na internet.
-      Para informações atualizadas e oficiais, consulte diretamente os canais da AMPAR-DF.
-    </p>
-    <div class="footer-legal-bottom">
-      <p>© <span id="year"></span> AMPAR-DF. Todos os direitos reservados.</p>
-      <a href="#topo" id="footerBackToTop">Voltar ao topo <span aria-hidden="true">↑</span></a>
-    </div>
-  </div>
-</footer>
 
 <script src="script.js"></script>
 </body>
