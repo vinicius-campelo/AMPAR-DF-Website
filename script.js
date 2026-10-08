@@ -225,7 +225,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const feedStatus = instagramFeed?.querySelector('[data-feed-status]');
 
   if (instagramFeed && feedList && feedStatus) {
-    const feedUrl = instagramFeed.dataset.feedUrl;
+    const feedUrl = new URL(instagramFeed.dataset.feedUrl, window.location.href);
+    if (feedUrl.origin === window.location.origin) {
+      feedUrl.pathname = '/api/ampardf-news';
+    }
     const profileUrl = 'https://www.facebook.com/ampardf';
     let hasLoaded = false;
 
@@ -348,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const timeout = window.setTimeout(() => controller.abort(), 12000);
 
       try {
-        const response = await fetch(feedUrl, {
+        const response = await fetch(feedUrl.href, {
           headers: { Accept: 'application/atom+xml, application/xml, text/xml' },
           signal: controller.signal,
           cache: 'no-store'
