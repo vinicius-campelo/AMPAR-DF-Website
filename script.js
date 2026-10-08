@@ -219,6 +219,198 @@ document.addEventListener('DOMContentLoaded', function () {
     mapClose?.addEventListener('click', () => setMapOpen(false));
   }
 
+  // Feed público em formato Atom das notícias da comunidade AMPAR-DF.
+  const instagramFeed = document.querySelector('[data-instagram-feed]');
+  const feedList = instagramFeed?.querySelector('[data-feed-list]');
+  const feedStatus = instagramFeed?.querySelector('[data-feed-status]');
+
+  if (instagramFeed && feedList && feedStatus) {
+    const feedUrl = instagramFeed.dataset.feedUrl;
+    const profileUrl = 'https://www.facebook.com/ampardf';
+    let hasLoaded = false;
+
+    const safeUrl = (value) => {
+      if (typeof value !== 'string') return null;
+      try {
+        const url = new URL(value);
+        return url.protocol === 'https:' ? url : null;
+      } catch {
+        return null;
+      }
+    };
+
+    const safePostUrl = (value) => {
+      const url = safeUrl(value);
+      return url && (url.hostname === 'facebook.com' || url.hostname.endsWith('.facebook.com')) ? url.href : profileUrl;
+    };
+
+    const safeImageUrl = (value) => {
+      const url = safeUrl(value);
+      return url && (url.hostname.endsWith('.fbcdn.net') || url.hostname.endsWith('.fbsbx.com')) ? url.href : null;
+    };
+
+    const showFeedStatus = (message, includeProfileLink = false) => {
+      feedStatus.replaceChildren(document.createTextNode(message));
+      if (includeProfileLink) {
+        const link = document.createElement('a');
+        link.href = profileUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = 'Acessar a página da AMPAR-DF.';
+        feedStatus.append(' ', link);
+      }
+      feedStatus.hidden = false;
+      feedList.hidden = true;
+    };
+
+    const extractEntryText = (entry) => {
+      const content = entry.getElementsByTagNameNS('http://www.w3.org/2005/Atom', 'content')[0];
+      const rawContent = content?.textContent || '';
+      const parsedContent = new DOMParser().parseFromString(rawContent.replace(/<br\s*\/?\s*>/gi, ' '), 'text/html');
+      parsedContent.querySelectorAll('script, style, iframe, noscript').forEach((element) => element.remove());
+      return (parsedContent.body.textContent || '')
+        .replace(/\(Feed generated with FetchRSS\)[\s\S]*$/i, '')
+        .replace(/When this happens, it's usually because the owner only shared it with a small group of people, changed who can see it or it's been deleted\.?/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    };
+
+    const createPostCard = (post) => {
+      const item = document.createElement('li');
+      item.className = 'instagram-post-card';
+
+      const link = document.createElement('a');
+      link.className = 'instagram-post-link';
+      link.href = safePostUrl(post.url);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+
+      const imageUrl = safeImageUrl(post.image);
+      if (imageUrl) {
+        const image = document.createElement('img');
+        image.className = 'instagram-post-thumbnail';
+        image.src = imageUrl;
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        image.addEventListener('error', () => image.remove(), { once: true });
+        link.append(image);
+      } else {
+        const marker = document.createElement('span');
+        marker.className = 'instagram-post-marker';
+        marker.setAttribute('aria-hidden', 'true');
+        marker.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 4.75h14A2.25 2.25 0 0 1 21.25 7v10A2.25 2.25 0 0 1 19 19.25H5A2.25 2.25 0 0 1 2.75 17V7A2.25 2.25 0 0 1 5 4.75Z" stroke="currentColor" stroke-width="1.6"/><path d="m3 15 5-5 4 4 2.5-2.5L21 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        link.append(marker);
+      }
+
+      const content = document.createElement('div');
+      content.className = 'instagram-post-content';
+
+      const timestamp = Date.parse(post.date || '');
+      if (Number.isFinite(timestamp)) {
+        const time = document.createElement('time');
+        time.className = 'instagram-post-date';
+        time.dateTime = new Date(timestamp).toISOString();
+        time.textContent = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }).format(timestamp);
+        content.append(time);
+      }
+
+      const headline = document.createElement('p');
+      headline.className = 'instagram-post-caption';
+      headline.textContent = post.title || 'Notícia da AMPAR-DF';
+      content.append(headline);
+
+      if (post.summary) {
+        const summary = document.createElement('p');
+        summary.className = 'instagram-post-summary';
+        summary.textContent = post.summary.length > 220 ? `${Array.from(post.summary).slice(0, 217).join('').trimEnd()}…` : post.summary;
+        content.append(summary);
+      }
+
+      link.append(content);
+
+      const callToAction = document.createElement('span');
+      callToAction.className = 'instagram-post-cta';
+      callToAction.append(document.createTextNode('Ler notícia '));
+      const arrow = document.createElement('span');
+      arrow.setAttribute('aria-hidden', 'true');
+      arrow.textContent = '↗';
+      callToAction.append(arrow);
+      link.append(callToAction);
+      item.append(link);
+      return item;
+    };
+
+    const loadInstagramFeed = async () => {
+      if (hasLoaded || !feedUrl) return;
+      hasLoaded = true;
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 12000);
+
+      try {
+        const response = await fetch(feedUrl, {
+          headers: { Accept: 'application/atom+xml, application/xml, text/xml' },
+          signal: controller.signal,
+          cache: 'no-store'
+        });
+        if (!response.ok) throw new Error('Feed indisponível');
+
+        const xml = new DOMParser().parseFromString(await response.text(), 'application/xml');
+        if (xml.querySelector('parsererror')) throw new Error('Formato Atom inválido');
+
+        const atomNamespace = 'http://www.w3.org/2005/Atom';
+        const entries = Array.from(xml.getElementsByTagNameNS(atomNamespace, 'entry'));
+        const posts = entries.map((entry) => {
+          const getText = (tag) => entry.getElementsByTagNameNS(atomNamespace, tag)[0]?.textContent?.trim() || '';
+          const rawTitle = getText('title');
+          const summary = extractEntryText(entry);
+          const genericTitle = !rawTitle || /^(this content isn't available right now|untitled)$/i.test(rawTitle);
+          const title = genericTitle ? (summary.split(/(?<=[.!?])\s+/)[0] || summary) : rawTitle;
+          const summaryText = title && summary.startsWith(title) ? summary.slice(title.length).replace(/^[\s,.!?…-]+/, '').trim() : summary;
+          const alternateLink = Array.from(entry.getElementsByTagNameNS(atomNamespace, 'link')).find((candidate) => candidate.getAttribute('rel') === 'alternate')
+            || entry.getElementsByTagNameNS(atomNamespace, 'link')[0];
+          const media = entry.getElementsByTagNameNS('http://search.yahoo.com/mrss/', 'content')[0];
+
+          return {
+            title: title || 'Notícia da AMPAR-DF',
+            summary: summaryText,
+            url: alternateLink?.getAttribute('href') || '',
+            date: getText('published') || getText('updated'),
+            image: media?.getAttribute('url') || ''
+          };
+        }).filter((post) => post.title || post.summary)
+          .sort((a, b) => Date.parse(b.date || '') - Date.parse(a.date || ''));
+
+        if (!posts.length) {
+          showFeedStatus('Ainda não há notícias disponíveis. Acompanhe as novidades na página da AMPAR-DF.', true);
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        posts.forEach((post) => fragment.append(createPostCard(post)));
+        feedList.replaceChildren(fragment);
+        feedStatus.hidden = true;
+        feedList.hidden = false;
+      } catch {
+        showFeedStatus('Não foi possível atualizar as notícias agora. Acompanhe as novidades diretamente na página da AMPAR-DF.', true);
+      } finally {
+        window.clearTimeout(timeout);
+      }
+    };
+
+    if ('IntersectionObserver' in window) {
+      const feedObserver = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          feedObserver.disconnect();
+          loadInstagramFeed();
+        }
+      }, { rootMargin: '240px 0px' });
+      feedObserver.observe(instagramFeed);
+    } else {
+      loadInstagramFeed();
+    }
+  }
+
   // 6. Manipulador do Formulário do WhatsApp
   const whatsappForm = document.getElementById('whatsappForm');
   if (whatsappForm) {
