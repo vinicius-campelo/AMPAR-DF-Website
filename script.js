@@ -189,36 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
     startTimer();
   }
 
-  // Mapa interativo incorporado na seção de redes sociais.
-  const mapToggle = document.querySelector('[data-map-toggle]');
-  const mapPanel = document.getElementById('mapa-da-regiao');
-  const mapFrame = mapPanel?.querySelector('iframe[data-src]');
-  const mapClose = mapPanel?.querySelector('[data-map-close]');
-
-  if (mapToggle && mapPanel && mapFrame) {
-    const setMapOpen = (isOpen) => {
-      mapPanel.hidden = !isOpen;
-      mapToggle.setAttribute('aria-expanded', String(isOpen));
-
-      if (isOpen) {
-        if (!mapFrame.hasAttribute('src')) mapFrame.src = mapFrame.dataset.src;
-        window.requestAnimationFrame(() => {
-          mapPanel.scrollIntoView({
-            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-            block: 'start'
-          });
-        });
-      } else {
-        mapToggle.focus();
-      }
-    };
-
-    mapToggle.addEventListener('click', () => {
-      setMapOpen(mapPanel.hidden);
-    });
-    mapClose?.addEventListener('click', () => setMapOpen(false));
-  }
-
   // Feed público em formato Atom das notícias da comunidade AMPAR-DF.
   const instagramFeed = document.querySelector('[data-instagram-feed]');
   const feedList = instagramFeed?.querySelector('[data-feed-list]');
@@ -226,9 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (instagramFeed && feedList && feedStatus) {
     const feedUrl = new URL(instagramFeed.dataset.feedUrl, window.location.href);
-    if (feedUrl.origin === window.location.origin) {
-      feedUrl.pathname = '/api/ampardf-news';
-    }
     const profileUrl = 'https://www.facebook.com/ampardf';
     let hasLoaded = false;
 
@@ -266,10 +233,8 @@ document.addEventListener('DOMContentLoaded', function () {
       feedList.hidden = true;
     };
 
-    const extractEntryText = (entry) => {
-      const content = entry.getElementsByTagNameNS('http://www.w3.org/2005/Atom', 'content')[0];
-      const rawContent = content?.textContent || '';
-      const parsedContent = new DOMParser().parseFromString(rawContent.replace(/<br\s*\/?\s*>/gi, ' '), 'text/html');
+    const extractEntryText = (rawContent) => {
+      const parsedContent = new DOMParser().parseFromString((rawContent || '').replace(/<br\s*\/?\s*>/gi, ' '), 'text/html');
       parsedContent.querySelectorAll('script, style, iframe, noscript').forEach((element) => element.remove());
       return (parsedContent.body.textContent || '')
         .replace(/\(Feed generated with FetchRSS\)[\s\S]*$/i, '')
@@ -352,36 +317,64 @@ document.addEventListener('DOMContentLoaded', function () {
 
       try {
         const response = await fetch(feedUrl.href, {
-          headers: { Accept: 'application/atom+xml, application/xml, text/xml' },
+          headers: { Accept: 'application/json, application/atom+xml, application/xml, text/xml' },
           signal: controller.signal,
           cache: 'no-store'
         });
         if (!response.ok) throw new Error('Feed indisponível');
 
-        const xml = new DOMParser().parseFromString(await response.text(), 'application/xml');
-        if (xml.querySelector('parsererror')) throw new Error('Formato Atom inválido');
+        const responseText = await response.text();
+        const contentType = response.headers.get('content-type') || '';
+        let posts;
 
-        const atomNamespace = 'http://www.w3.org/2005/Atom';
-        const entries = Array.from(xml.getElementsByTagNameNS(atomNamespace, 'entry'));
-        const posts = entries.map((entry) => {
-          const getText = (tag) => entry.getElementsByTagNameNS(atomNamespace, tag)[0]?.textContent?.trim() || '';
-          const rawTitle = getText('title');
-          const summary = extractEntryText(entry);
-          const genericTitle = !rawTitle || /^(this content isn't available right now|untitled)$/i.test(rawTitle);
-          const title = genericTitle ? (summary.split(/(?<=[.!?])\s+/)[0] || summary) : rawTitle;
-          const summaryText = title && summary.startsWith(title) ? summary.slice(title.length).replace(/^[\s,.!?…-]+/, '').trim() : summary;
-          const alternateLink = Array.from(entry.getElementsByTagNameNS(atomNamespace, 'link')).find((candidate) => candidate.getAttribute('rel') === 'alternate')
-            || entry.getElementsByTagNameNS(atomNamespace, 'link')[0];
-          const media = entry.getElementsByTagNameNS('http://search.yahoo.com/mrss/', 'content')[0];
+        if (contentType.includes('application/json')) {
+          const data = JSON.parse(responseText);
+          if (data.status !== 'ok' || !Array.isArray(data.items)) throw new Error('Feed RSS inválido');
 
-          return {
-            title: title || 'Notícia da AMPAR-DF',
-            summary: summaryText,
-            url: alternateLink?.getAttribute('href') || '',
-            date: getText('published') || getText('updated'),
-            image: media?.getAttribute('url') || ''
-          };
-        }).filter((post) => post.title || post.summary)
+          posts = data.items.map((entry) => {
+            const rawTitle = (entry.title || '').trim();
+            const summary = extractEntryText(entry.content || entry.description || '');
+            const genericTitle = !rawTitle || /^(this content isn't available right now|untitled)$/i.test(rawTitle);
+            const title = genericTitle ? (summary.split(/(?<=[.!?])\s+/)[0] || summary) : rawTitle;
+            const summaryText = title && summary.startsWith(title) ? summary.slice(title.length).replace(/^[\s,.!?…-]+/, '').trim() : summary;
+
+            return {
+              title: title || 'Notícia da AMPAR-DF',
+              summary: summaryText,
+              url: entry.link || '',
+              date: entry.pubDate || '',
+              image: entry.thumbnail || entry.enclosure?.link || ''
+            };
+          });
+        } else {
+          const xml = new DOMParser().parseFromString(responseText, 'application/xml');
+          if (xml.querySelector('parsererror')) throw new Error('Formato Atom inválido');
+
+          const atomNamespace = 'http://www.w3.org/2005/Atom';
+          const entries = Array.from(xml.getElementsByTagNameNS(atomNamespace, 'entry'));
+          posts = entries.map((entry) => {
+            const getText = (tag) => entry.getElementsByTagNameNS(atomNamespace, tag)[0]?.textContent?.trim() || '';
+            const rawTitle = getText('title');
+            const content = entry.getElementsByTagNameNS(atomNamespace, 'content')[0]?.textContent || '';
+            const summary = extractEntryText(content);
+            const genericTitle = !rawTitle || /^(this content isn't available right now|untitled)$/i.test(rawTitle);
+            const title = genericTitle ? (summary.split(/(?<=[.!?])\s+/)[0] || summary) : rawTitle;
+            const summaryText = title && summary.startsWith(title) ? summary.slice(title.length).replace(/^[\s,.!?…-]+/, '').trim() : summary;
+            const alternateLink = Array.from(entry.getElementsByTagNameNS(atomNamespace, 'link')).find((candidate) => candidate.getAttribute('rel') === 'alternate')
+              || entry.getElementsByTagNameNS(atomNamespace, 'link')[0];
+            const media = entry.getElementsByTagNameNS('http://search.yahoo.com/mrss/', 'content')[0];
+
+            return {
+              title: title || 'Notícia da AMPAR-DF',
+              summary: summaryText,
+              url: alternateLink?.getAttribute('href') || '',
+              date: getText('published') || getText('updated'),
+              image: media?.getAttribute('url') || ''
+            };
+          });
+        }
+
+        posts = posts.filter((post) => post.title || post.summary)
           .sort((a, b) => Date.parse(b.date || '') - Date.parse(a.date || ''));
 
         if (!posts.length) {
